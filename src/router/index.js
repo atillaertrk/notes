@@ -5,6 +5,7 @@ import readNote from '../components/readNote'
 import WriteNote  from '../views/WriteNote.vue'
 import postList from '../components/postList.vue'
 import RegisterView from '@/views/RegisterView'
+import LoginView from '@/views/LoginView'
 const routes = [
   {
     path: '/',
@@ -37,6 +38,11 @@ const routes = [
     path: '/registerUser',
     name: 'register',
     component:RegisterView
+  },
+  {
+    path: '/loginUser',
+    name: 'login',
+    component:LoginView
   },
 ]
 

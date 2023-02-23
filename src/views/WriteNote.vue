@@ -1,6 +1,6 @@
 <template>
-  <div class="container mt-3">
-    <div class="add-form">
+  <div class="container write-note">
+    <div class="add-form clearfix">
       <form @submit.prevent="send">
         <label for="title">Title</label>
         <input type="text" name="title" v-model="title" id="title" />
@@ -18,9 +18,8 @@
 <script>
 import postNote from "@/composables/postNote";
 import { ref } from "vue";
-import { useRouter} from "vue-router";
-import emitter from '@/composables/eventBus';
-
+import { useRouter } from "vue-router";
+import emitter from "@/composables/eventBus";
 
 export default {
   setup() {
@@ -28,18 +27,15 @@ export default {
     let content = ref("");
     let errors = ref("");
     let router = useRouter();
-    
-    
+
     const send = async () => {
       const { posting, state } = postNote(title.value, content.value);
       try {
         await posting();
         if (!state.errs) {
-          
-          emitter.emit("degisken", )
-          
+          emitter.emit("degisken");
+
           router.push({ name: "home" });
-          
         }
       } catch (err) {
         errors.value = state.errs;
@@ -60,8 +56,10 @@ export default {
 .add-form input {
   display: block;
   width: 100%;
-  padding: 5px;
-  font-size: 1.2rem;
+  border-radius: 3px;
+  border: 1px solid #9597a6;
+  padding: 10px;
+  outline: none;
 }
 .add-form input:active {
   border: 1px solid black;
@@ -75,5 +73,39 @@ export default {
 }
 .add-form button {
   float: right;
+  
+}
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+.write-note {
+  background-color: #ffff;
+  width: 75% !important;
+  position: relative;
+  left: 50%;
+  margin-top: 75px !important;
+  transform: translate(-50%);
+  padding: 60px!important;
+  color: var(--bs-navbar-color);
+  border-radius: 10px;
+  font-size: 14px !important;
+  color: #777777;
+  height: inherit;
+  background-image: url("@/assets/write.png");
+  background-blend-mode: lighten;
+  background-size: cover;
+
+}
+@media only screen and (max-width: 1000px) and (min-width: 0px) {
+  .write-note {
+    display: block!important;
+    width: 100%!important;
+    padding: 10px!important;
+    padding-bottom: 20px;
+    
+  }
+  
 }
 </style>

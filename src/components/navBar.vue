@@ -1,6 +1,5 @@
 <template>
   <div class="navbar">
-    
     <img class="image" src='../assets/nav-unsplash.jpg' alt="">
     <div class="menu">
         <ul class="navbar-nav d-flex flex-row">
@@ -15,10 +14,13 @@
               <router-link :to="{name:'WriteNote'}" class="nav-link" >Add Note</router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link disabled">Login</a>
+              <router-link :to="{name: 'login'}" class="nav-link">Login</router-link>
             </li>
             <li class="nav-item">
               <router-link :to="{name:'register'}" class="nav-link" >Register</router-link>
+            </li>
+            <li class="nav-item">
+              <a href="" class="nav-link" @click="logOut" >Logout</a>
             </li>
           </ul>
     </div>
@@ -26,9 +28,22 @@
 </template>
 
 <script>
-export default {
+import {auth} from '../firebase/config'
+import { useRouter } from 'vue-router';
 
+export default {
+  setup() {
+    
+    const router= useRouter()
+    const logout=async()=>{
+      await auth.signOut().then(()=>{
+        router.push({name:'home'})
+      })
+    }
+    return {logout}
+  }
 }
+
 </script>
 
 <style>

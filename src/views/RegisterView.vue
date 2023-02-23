@@ -1,45 +1,44 @@
 <template>
-  <div>
-    <div class="container rel">
-      <div class="box">
-        <div class="row register-area">
-          <div class="col back"></div>
-          <div class="col">
-            <form>
-              <div class="form_wrap">
-                <div class="input_grp">
-                  <div class="input_wrap">
-                    <label for="fname">Real Name <small>(*optional)</small></label>
-                    <input type="text" id="fname" />
-                  </div>
-                  <div class="input_wrap">
-                    <label for="lname">UserName</label>
-                    <input type="text" id="lname" />
-                  </div>
+  <div class="container rel">
+    <div class="alert alert-danger" v-if="hata">
+      {{ hata }}
+    </div>
+    <div class="box">
+      <div class="row register-area">
+        <div class="col back"></div>
+        <div class="col side">
+          <form @submit.prevent="register">
+            <div class="form_wrap">
+              <div class="input_grp">
+                <div class="input_wrap">
+                  <label for="fname"
+                    >Real Name <small>(*optional)</small></label
+                  >
+                  <input type="text" id="fname" v-model="realName" />
                 </div>
                 <div class="input_wrap">
-                  <label for="email">Email Address</label>
-                  <input type="text" id="email" />
-                </div>
-
-                <div class="input_wrap">
-                  <label for="pass">Password</label>
-                  <input type="password" id="pass" />
-                </div>
-                <div class="input_wrap">
-                  <label for="passag">Password Again</label>
-                  <input type="password" id="passag" />
-                </div>
-                <div class="input_wrap">
-                  <input
-                    type="submit"
-                    value="Register Now"
-                    class="submit_btn"
-                  />
+                  <label for="lname">UserName</label>
+                  <input type="text" id="lname" v-model="userName" required />
                 </div>
               </div>
-            </form>
-          </div>
+              <div class="input_wrap">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" v-model="mail" required />
+              </div>
+
+              <div class="input_wrap">
+                <label for="pass">Password</label>
+                <input type="password" id="pass" v-model="pass" required />
+              </div>
+              <div class="input_wrap">
+                <label for="passag">Password Again</label>
+                <input type="password" id="passag" v-model="passAgain" required/>
+              </div>
+              <div class="input_wrap">
+                <input type="submit" value="Register Now" class="submit_btn" />
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -48,15 +47,36 @@
 
 <script>
 import { ref } from "vue";
-
+import useRegister from "@/composables/useRegister";
+import { useRouter } from "vue-router";
 export default {
   setup() {
-    let mail= ref("")
-    let userName= ref("")
-    let pass= ref("")
-    let passAgain= ref("")
+    let realName = ref("");
+    let mail = ref("");
+    let userName = ref("");
+    let pass = ref("");
+    let passAgain = ref("");
+    let router= useRouter()
+    const { hata, signup } = useRegister();
+    const register = async () => {
+      if (userName.value && mail.value) {
+        if (pass.value == passAgain.value) {
+          if (pass.value.length >= 6) {
+            await signup(mail.value, pass.value, userName.value).then(()=>{
+              router.push({name:'login'})
+            })
+          } else {
+            hata.value = "Password must be at least 6 characters.";
+          }
+        } else{
+          hata.value= 'Passwords do not match, please check'
+        }
+      } else{
+        hata.value='Username or Email cannot be blank'
+      }
 
-    return {mail, userName, pass, passAgain}
+    };
+    return { mail, realName, userName, pass, passAgain, register, hata };
   }
 };
 </script>
@@ -64,26 +84,25 @@ export default {
 <style>
 .rel {
   position: relative;
-  width: 100vw;
-  height: 100vh;
+  margin-top: 80px;
 }
 .box {
   border-radius: 25px;
   width: 50vw;
   position: relative;
   left: 50%;
-  top: 50%;
-  height: 50vh;
-  transform: translate(-50%, -70%);
+  transform: translate(-50%);
   background-color: #303030;
 }
 .back {
   background-image: url("@/assets/login.png");
   background-size: cover;
   width: 100% !important;
-  height: 100%;
   background-position: center;
   border-radius: 25px 0 0 25px;
+}
+.side {
+  padding-bottom: 20px;
 }
 .register-area {
   width: 100%;
@@ -116,6 +135,9 @@ export default {
 .form_wrap .input_grp input[type="text"] {
   width: 165px;
 }
+.form_wrap .input_grp input[type="email"] {
+  width: 165px;
+}
 .form_wrap .input_grp input[type="password"] {
   width: 165px;
 }
@@ -134,6 +156,14 @@ export default {
   padding: 10px;
   outline: none;
 }
+.form_wrap input[type="email"] {
+  width: 100%;
+  border-radius: 3px;
+  border: 1px solid #9597a6;
+  padding: 10px;
+  outline: none;
+}
+
 
 .form_wrap input[type="text"]:focus {
   border-color: #ebd0ce;
@@ -164,5 +194,32 @@ export default {
 
 .form_wrap .submit_btn:hover {
   background: #b3934e;
+}
+
+@media only screen and (max-width: 1200px) {
+  .back {
+    display: none;
+  }
+  form {
+    padding: 10px;
+  }
+}
+@media only screen and (max-width: 1000px) and (min-width: 0px) {
+  .rel {
+    display: block !important;
+    width: 100% !important;
+    padding: 10px !important;
+    padding-bottom: 20px;
+    margin: 0 !important;
+  }
+  .box {
+    width: 100%;
+  }
+  .form_wrap .input_grp {
+    display: block;
+  }
+  .form_wrap .input_grp input[type="text"] {
+    width: 100% !important;
+  }
 }
 </style>

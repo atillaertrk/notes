@@ -12,9 +12,10 @@ const readNote= (id)=>{
         if(!res.exists){
             throw Error("Makaleye ulaşılamadı. İçerik silinmiş veya bağlantı adresi yanlış olabilir")
         }
-        const tarih= res.data().creationDate
-        const postDate= moment(tarih).locale('tr').calendar()
-        note.value={...res.data(), id:res.id, creationDate:postDate}
+        // const data = doc.data()
+        // const tarih= res.data().creationDate
+        // const postDate= moment(tarih).locale('tr').calendar()
+        note.value={...res.data(), id:res.id, creationDate: moment(res.data().creationDate.toDate()).locale('eng').calendar()}
         } catch (Error) {
             errors.value= Error.message
         }

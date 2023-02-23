@@ -18,7 +18,7 @@ const getNotes = () => {
 
       state.posts = res.docs.map((doc) => {
         const data = doc.data();
-        return { ...data, id: doc.id, creationDate: moment(data.creationDate.toDate()).locale('tr').calendar() };
+        return { ...data, id: doc.id, creationDate: moment(data.creationDate.toDate()).locale('eng').calendar() };
       });
     } catch (error) {
       state.errs = error.message;
