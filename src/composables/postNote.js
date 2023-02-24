@@ -2,7 +2,7 @@ import { db, timeStamp } from "@/firebase/config";
 import { reactive } from "vue";
 import getNotes from "@/composables/getNotes";
 
-const postNote = (title, content) => {
+const postNote = (title, content, userUID) => {
   const { getNoteList } = getNotes();
   const state = reactive({
     errs: null,
@@ -16,6 +16,7 @@ const postNote = (title, content) => {
         .add({
           title: title,
           content: content,
+          userUID: userUID,
           creationDate: timeStamp(),
         });
       await getNoteList();

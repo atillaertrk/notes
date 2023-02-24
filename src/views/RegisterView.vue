@@ -63,7 +63,10 @@ export default {
         if (pass.value == passAgain.value) {
           if (pass.value.length >= 6) {
             await signup(mail.value, pass.value, userName.value).then(()=>{
+              if(hata.value==null){
               router.push({name:'login'})
+
+              }
             })
           } else {
             hata.value = "Password must be at least 6 characters.";
