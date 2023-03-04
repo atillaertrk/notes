@@ -61,6 +61,9 @@ export default {
          if (userInfo.value == rest.value) { 
         userAuth.value = true;}
       }
+      else{
+        console.log("");
+      }
     });
     const deletePost = async () => { //router ekleeeeee!!!!
       

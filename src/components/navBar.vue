@@ -35,12 +35,12 @@ export default {
   setup() {
     
     const router= useRouter()
-    const logout=async()=>{
+    const logOut=async()=>{
       await auth.signOut().then(()=>{
         router.push({name:'home'})
       })
     }
-    return {logout}
+    return {logOut}
   }
 }
 
