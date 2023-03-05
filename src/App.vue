@@ -17,6 +17,9 @@
 import navBar from "./components/navBar.vue";
 import postList from "./components/postList.vue";
 export default {
+  setup() {
+    
+  },
   components: {
     navBar,
     postList

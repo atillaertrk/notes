@@ -10,16 +10,16 @@
             <li class="nav-item">
               <router-link to="/features" class="nav-link" >Features</router-link>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" v-if="isUserLoggedIn">
               <router-link :to="{name:'WriteNote'}" class="nav-link" >Add Note</router-link>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" v-if="!isUserLoggedIn">
               <router-link :to="{name: 'login'}" class="nav-link">Login</router-link>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" v-if="!isUserLoggedIn">
               <router-link :to="{name:'register'}" class="nav-link" >Register</router-link>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" v-if="isUserLoggedIn">
               <a href="" class="nav-link" @click="logOut" >Logout</a>
             </li>
           </ul>
@@ -28,23 +28,31 @@
 </template>
 
 <script>
-import {auth} from '../firebase/config'
-import { useRouter } from 'vue-router';
+import { auth } from "../firebase/config";
+import { useRouter } from "vue-router";
+import { useStore } from "vuex";
+import {computed} from 'vue'
 
 export default {
   setup() {
-    
-    const router= useRouter()
-    const logOut=async()=>{
-      await auth.signOut().then(()=>{
-        router.push({name:'home'})
-      })
-    }
-    return {logOut}
-  }
-}
+    const store = useStore(); 
+    const router = useRouter();
+    const isUserLoggedIn = computed(() => {return store.getters.getIsLoggedIn});
 
+    const logOut = async () => {
+      await auth.signOut().then(() => {
+        isUserLoggedIn.value = false;
+        store.commit("setIsLoggedIn", false);
+
+        router.push({ name: "home" });
+      });
+    };
+
+    return { logOut, isUserLoggedIn };
+  }
+};
 </script>
+
 
 <style>
 .navbar{    
