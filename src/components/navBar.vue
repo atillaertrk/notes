@@ -20,6 +20,9 @@
               <router-link :to="{name:'register'}" class="nav-link" >Register</router-link>
             </li>
             <li class="nav-item" v-if="isUserLoggedIn">
+              <router-link :to="{name:'ProfileView'}" class="nav-link">Profile</router-link>
+            </li>
+            <li class="nav-item" v-if="isUserLoggedIn">
               <a href="" class="nav-link" @click="logOut" >Logout</a>
             </li>
           </ul>
@@ -37,7 +40,8 @@ export default {
   setup() {
     const store = useStore(); 
     const router = useRouter();
-    const isUserLoggedIn = computed(() => {return store.getters.getIsLoggedIn});
+    const isUserLoggedIn = computed(() => {
+      return store.getters.getIsLoggedIn});
 
     const logOut = async () => {
       await auth.signOut().then(() => {

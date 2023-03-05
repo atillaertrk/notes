@@ -30,6 +30,7 @@ export default {
       getNoteList();
     });
     onMounted(() => {
+      
       getNoteList();
     });
   

@@ -105,7 +105,6 @@ export default {
   border-radius: 10px;
   font-size: 14px !important;
   color: #777777;
-  height: inherit;
   background-image: url("@/assets/write.png");
   background-blend-mode: lighten;
   background-size: cover;

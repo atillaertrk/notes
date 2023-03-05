@@ -5,6 +5,7 @@ import readNote from '../components/readNote'
 import WriteNote  from '../views/WriteNote.vue'
 import postList from '../components/postList.vue'
 import RegisterView from '@/views/RegisterView'
+import ProfileView from '@/views/ProfileView'
 import LoginView from '@/views/LoginView'
 import { auth } from '@/firebase/config'
 const routes = [
@@ -17,6 +18,20 @@ const routes = [
     path: '/write-note',
     name: 'WriteNote',
     component: WriteNote,
+    beforeEnter: (to, from, next) => {
+      const userProfile = auth.currentUser;
+      if (!userProfile) {
+        next({name:'home'})
+      }
+      else{
+        next()
+      }
+    }
+  },
+  {
+    path: '/profile',
+    name: 'ProfileView',
+    component: ProfileView,
     beforeEnter: (to, from, next) => {
       const userProfile = auth.currentUser;
       if (!userProfile) {

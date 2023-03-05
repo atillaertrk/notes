@@ -5,7 +5,9 @@
     </div>
     <div class="row gx-3 main-app-row">
       <div class="col-md-8 main-app-col">
-        <div class="h-100 p-3 mainView"><router-view :key="$route.path" /></div>
+        <div class="h-100 p-3 mainView">
+          <router-view :key="$route.path" />
+        </div>
       </div>
       <div class="col-md-4 post-list-view">
         <postList />
